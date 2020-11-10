@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: komodo-linux
-          path: ./komodo-linux.zip
+          path: ./marmara/komodo-linux.zip
 
       - name: Login to docker hub
         uses: actions-hub/docker/login@master
@@ -101,7 +101,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: komodo-osx
-          path: ./komodo-osx.zip
+          path: ./marmara/komodo-osx.zip
 
   windows-build:
     name: Windows Build (mingw)
@@ -134,7 +134,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: komodo-win
-          path: ./komodo-win.zip      
+          path: ./marmara/komodo-win.zip      
 
   publish-release:
       name: Publishing CD releases
