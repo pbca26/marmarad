@@ -128,7 +128,7 @@ jobs:
   publish-release:
       name: Publishing CD releases
       runs-on: ubuntu-latest
-      needs: [linux-build, osx-build, windows-build]
+      needs: [linux-build, osx-build]
       steps:
         - name: Download komodo-linux.zip
           uses: actions/download-artifact@v1
