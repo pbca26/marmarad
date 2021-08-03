@@ -207,4 +207,3 @@ jobs:
             asset_path: komodo-win/komodo-win.zip
             asset_name: komodo_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_win.zip
             asset_content_type: application/zip
-
