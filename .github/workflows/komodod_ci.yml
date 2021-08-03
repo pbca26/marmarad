@@ -129,16 +129,16 @@ jobs:
       name: Publishing CD releases
       runs-on: ubuntu-latest
       #needs: [linux-build, osx-build, windows-build]
-      needs: [linux-build, osx-build]
+      needs: [linux-build]
       steps:
         - name: Download komodo-linux.zip
           uses: actions/download-artifact@v1
           with:
             name: komodo-linux  
-        - name: Download komodo-osx.zip
-          uses: actions/download-artifact@v1
-          with:
-            name: komodo-osx
+        # - name: Download komodo-osx.zip
+        #   uses: actions/download-artifact@v1
+        #   with:
+        #     name: komodo-osx
         #- name: Download komodo-win.zip
         #  uses: actions/download-artifact@v1
         #  with:
@@ -174,16 +174,16 @@ jobs:
             asset_path: komodo-linux/komodo-linux.zip
             asset_name: komodo_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_linux.zip
             asset_content_type: application/zip
-        - name: Upload OSX Release Asset
-          id: upload-osx-release-asset 
-          uses: actions/upload-release-asset@latest
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-            asset_path: komodo-osx/komodo-osx.zip
-            asset_name: komodo_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_osx.zip
-            asset_content_type: application/zip
+        # - name: Upload OSX Release Asset
+        #   id: upload-osx-release-asset 
+        #   uses: actions/upload-release-asset@latest
+        #   env:
+        #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #   with:
+        #     upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        #     asset_path: komodo-osx/komodo-osx.zip
+        #     asset_name: komodo_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_osx.zip
+        #     asset_content_type: application/zip
         #- name: Upload Windows Release Asset
         #  id: upload-windows-release-asset 
         #  uses: actions/upload-release-asset@latest
