@@ -61,20 +61,6 @@ jobs:
           name: komodo-linux
           path: ./marmara/komodo-linux.zip
 
-      - name: Login to docker hub
-        uses: actions-hub/docker/login@master
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build container
-        run: docker build -f Dockerfile.release -t komodoofficial/komodo:cd_release_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }} .
-
-      - name: Push to docker hub
-        uses: actions-hub/docker@master
-        with:
-          args: push komodoofficial/komodo:cd_release_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}
-
   osx-build:
     name: OSX Build
     runs-on: macos-latest
@@ -107,7 +93,7 @@ jobs:
 
   windows-build:
     name: Windows Build (mingw)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
 
     steps:
       - uses: actions/checkout@v2
@@ -142,7 +128,8 @@ jobs:
   publish-release:
       name: Publishing CD releases
       runs-on: ubuntu-latest
-      needs: [linux-build, osx-build, windows-build]
+      #needs: [linux-build, osx-build, windows-build]
+      needs: [linux-build, osx-build]
       steps:
         - name: Download komodo-linux.zip
           uses: actions/download-artifact@v1
@@ -152,10 +139,10 @@ jobs:
           uses: actions/download-artifact@v1
           with:
             name: komodo-osx
-        - name: Download komodo-win.zip
-          uses: actions/download-artifact@v1
-          with:
-            name: komodo-win
+        #- name: Download komodo-win.zip
+        #  uses: actions/download-artifact@v1
+        #  with:
+        #    name: komodo-win
 
         - name: Extract branch name
           shell: bash
@@ -197,13 +184,14 @@ jobs:
             asset_path: komodo-osx/komodo-osx.zip
             asset_name: komodo_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_osx.zip
             asset_content_type: application/zip
-        - name: Upload Windows Release Asset
-          id: upload-windows-release-asset 
-          uses: actions/upload-release-asset@latest
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-            asset_path: komodo-win/komodo-win.zip
-            asset_name: komodo_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_win.zip
-            asset_content_type: application/zip
+        #- name: Upload Windows Release Asset
+        #  id: upload-windows-release-asset 
+        #  uses: actions/upload-release-asset@latest
+        #  env:
+        #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        #  with:
+        #    upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        #    asset_path: komodo-win/komodo-win.zip
+        #    asset_name: komodo_${{ steps.shortify_commit.outputs.sha_short }}_${{ steps.extract_branch.outputs.branch }}_win.zip
+        #    asset_content_type: application/zip
+
